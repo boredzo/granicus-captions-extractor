@@ -39,10 +39,11 @@ def extract_captions_from_Granicus_JSON(URL_or_path):
 		if 'modernplayer.swf' in URL_or_path:
 			parsed_SWF_URL = urlparse.urlparse(URL_or_path)
 			query = urlparse.parse_qs(parsed_SWF_URL.query)
-			JSON_URL = 'https:' + query['ScriptUrl']
+			JSON_URL = 'https:' + query['ScriptUrl'][0]
 		else:
 			JSON_URL = URL_or_path
-		curl = subprocess.Popen([ '/usr/bin/curl', '-L', URL_or_path ], stdout=subprocess.PIPE, stderr=open('/dev/null', 'wb'))
+
+		curl = subprocess.Popen([ '/usr/bin/curl', '-L', JSON_URL ], stdout=subprocess.PIPE, stderr=open('/dev/null', 'wb'))
 		JSON = curl.stdout.read()
 		curl.stdout.close()
 		curl.wait()
